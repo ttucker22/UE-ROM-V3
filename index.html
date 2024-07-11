@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UE ROM Impairment Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            text-align: center;
+        }
+        .card {
+            border: 1px solid white; /* White border that matches the card background */
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .card h2 {
+            margin-top: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+            vertical-align: middle;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+        th:first-child, td:first-child {
+            width: 15%;
+        }
+        th:nth-child(2), th:nth-child(3), th:nth-child(4),
+        td:nth-child(2), td:nth-child(3), td:nth-child(4) {
+            width: 25%;
+        }
+        th:last-child, td:last-child {
+            width: 10%;
+        }
+        input[type="number"] {
+            width: 60%;
+            box-sizing: border-box;
+            text-align: center;
+            margin: 0 auto;
+            display: block;
+        }
+        .total {
+            font-weight: bold;
+            text-align: center;
+        }
+        .clear-button {
+            display: block;
+            width: 120px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .clear-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>UE ROM Impairment Calculator</h1>
+    
+    <div class="card" id="wrist">
+        <h2>Wrist</h2>
+        <table>
+            <tr>
+                <th></th>
+                <th>Flexion</th>
+                <th>Extension</th>
+                <th>Ankylosis</th>
+                <th>Imp%</th>
+            </tr>
+            <tr>
+                <td>Angle°</td>
+                <td><input type="number" id="wrist-flexion-angle"></td>
+                <td><input type="number" id="wrist-extension-angle"></td>
+                <td><input type="number" id="wrist-flexext-ankylosis-angle"></td>
+                <td rowspan="2" id="wrist-flexext-imp">0</td>
+            </tr>
+            <tr>
+                <td>Imp%</td>
+                <td id="wrist-flexion-imp">0</td>
+                <td id="wrist-extension-imp">0</td>
+                <td id="wrist-flexext-ankylosis-imp">0</td>
+            </tr>
+            <tr>
+                <th></th>
+                <th>Radial Deviation</th>
+                <th>Ulnar Deviation</th>
+                <th>Ankylosis</th>
+                <th>Imp%</th>
+            </tr>
+            <tr>
+                <td>Angle°</td>
+                <td><input type="number" id="wrist-rd-angle"></td>
+                <td><input type="number" id="wrist-ud-angle"></td>
+                <td><input type="number" id="wrist-rdud-ankylosis-angle"></td>
+                <td rowspan="2" id="wrist-rdud-imp">0</td>
+            </tr>
+            <tr>
+                <td>Imp%</td>
+                <td id="wrist-rd-imp">0</td>
+                <td id="wrist-ud-imp">0</td>
+                <td id="wrist-rdud-ankylosis-imp">0</td>
+            </tr>
+        </table>
+        <p class="total">Total: <span id="wrist-total-imp">0 UE = 0 WPI</span></p>
+    </div>
+
+    <div class="card" id="elbow">
+        <h2>Elbow</h2>
+        <table>
+            <tr>
+                <th></th>
+                <th>Flexion</th>
+                <th>Extension</th>
+                <th>Ankylosis</th>
+                <th>Imp%</th>
+            </tr>
+            <tr>
+                <td>Angle°</td>
+                <td><input type="number" id="elbow-flexion-angle"></td>
+                <td><input type="number" id="elbow-extension-angle"></td>
+                <td><input type="number" id="elbow-flexext-ankylosis-angle"></td>
+                <td rowspan="2" id="elbow-flexext-imp">0</td>
+            </tr>
+            <tr>
+                <td>Imp%</td>
+                <td id="elbow-flexion-imp">0</td>
+                <td id="elbow-extension-imp">0</td>
+                <td id="elbow-flexext-ankylosis-imp">0</td>
+            </tr>
+            <tr>
+                <th></th>
+                <th>Pronation</th>
+                <th>Supination</th>
+                <th>Ankylosis</th>
+                <th>Imp%</th>
+            </tr>
+            <tr>
+                <td>Angle°</td>
+                <td><input type="number" id="elbow-pronation-angle"></td>
+                <td><input type="number" id="elbow-supination-angle"></td>
+                <td><input type="number" id="elbow-prosup-ankylosis-angle"></td>
+                <td rowspan="2" id="elbow-prosup-imp">0</td>
+            </tr>
+            <tr>
+                <td>Imp%</td>
+                <td id="elbow-pronation-imp">0</td>
+                <td id="elbow-supination-imp">0</td>
+                <td id="elbow-prosup-ankylosis-imp">0</td>
+            </tr>
+        </table>
+        <p class="total">Total: <span id="elbow-total-imp">0 UE = 0 WPI</span></p>
+    </div>
+
+    <div class="card" id="shoulder">
+        <h2>Shoulder</h2>
+        <table>
+            <tr>
+                <th></th>
+                <th>Flexion</th>
+                <th>Extension</th>
+                <th>Ankylosis</th>
+                <th>Imp%</th>
+            </tr>
+            <tr>
+                <td>Angle°</td>
+                <td><input type="number" id="shoulder-flexion-angle"></td>
+                <td><input type="number" id="shoulder-extension-angle"></td>
+                <td><input type="number" id="shoulder-flexext-ankylosis-angle"></td>
+                <td rowspan="2" id="shoulder-flexext-imp">0</td>
+            </tr>
+            <tr>
+                <td>Imp%</td>
+                <td id="shoulder-flexion-imp">0</td>
+                <td id="shoulder-extension-imp">0</td>
+                <td id="shoulder-flexext-ankylosis-imp">0</td>
+            </tr>
+            <tr>
+                <th></th>
+                <th>Abduction</th>
+                <th>Adduction</th>
+                <th>Ankylosis</th>
+                <th>Imp%</th>
+            </tr>
+            <tr>
+                <td>Angle°</td>
+                <td><input type="number" id="shoulder-abduction-angle"></td>
+                <td><input type="number" id="shoulder-adduction-angle"></td>
+                <td><input type="number" id="shoulder-abdadd-ankylosis-angle"></td>
+                <td rowspan="2" id="shoulder-abdadd-imp">0</td>
+            </tr>
+            <tr>
+                <td>Imp%</td>
+                <td id="shoulder-abduction-imp">0</td>
+                <td id="shoulder-adduction-imp">0</td>
+                <td id="shoulder-abdadd-ankylosis-imp">0</td>
+            </tr>
+            <tr>
+                <th></th>
+                <th>Internal Rotation</th>
+                <th>External Rotation</th>
+                <th>Ankylosis</th>
+                <th>Imp%</th>
+            </tr>
+            <tr>
+                <td>Angle°</td>
+                <td><input type="number" id="shoulder-introt-angle"></td>
+                <td><input type="number" id="shoulder-extrot-angle"></td>
+                <td><input type="number" id="shoulder-rotation-ankylosis-angle"></td>
+                <td rowspan="2" id="shoulder-rotation-imp">0</td>
+            </tr>
+            <tr>
+                <td>Imp%</td>
+                <td id="shoulder-introt-imp">0</td>
+                <td id="shoulder-extrot-imp">0</td>
+                <td id="shoulder-rotation-ankylosis-imp">0</td>
+            </tr>
+        </table>
+        <p class="total">Total: <span id="shoulder-total-imp">0 UE = 0 WPI</span></p>
+    </div>
+
+    <button id="clearAllButton" class="clear-button">Clear All</button>
+
+    <!-- Link to the external script.js file -->
+    <script src="script.js"></script>
+</body>
+</html>
