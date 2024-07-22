@@ -1276,12 +1276,13 @@ function updateShoulderImpairment() {
     let totalImp = flexextImp + abdaddImp + rotationImp;
     let wpi = Math.round(totalImp * 0.6);
 
-    // Display total
+    // Display total with addition when two or more impairments are non-zero
+    let nonZeroImps = [flexextImp, abdaddImp, rotationImp].filter(imp => imp !== 0);
     let totalText = '';
-    if (flexextImp !== 0 && abdaddImp !== 0 && rotationImp !== 0) {
-        totalText = `${flexextImp} + ${abdaddImp} + ${rotationImp} = ${totalImp} UE = ${wpi} WPI`;
+    if (nonZeroImps.length >= 2) {
+        totalText = nonZeroImps.join(' + ') + ' = ' + totalImp + ' UE = ' + wpi + ' WPI';
     } else {
-        totalText = `${totalImp} UE = ${wpi} WPI`;
+        totalText = totalImp + ' UE = ' + wpi + ' WPI';
     }
     document.getElementById('shoulder-total-imp').textContent = totalText;
 }
