@@ -1229,22 +1229,28 @@ function updateJointImpairment(jointPrefix, dataFlexExt, dataRadUln) {
     document.getElementById(jointPrefix + (jointPrefix === 'wrist' ? '-rdud-imp' : 
                             jointPrefix === 'elbow' ? '-prosup-imp' : '-abdadd-imp')).textContent = rdudImp;
 
-    // Calculate and update total impairment
-    let totalImp = flexextImp + rdudImp;
-    let wpi = Math.round(totalImp * 0.6);
+    // Calculate and update total impairment only for wrist and elbow
+    if (jointPrefix !== 'shoulder') {
+        let totalImp = flexextImp + rdudImp;
+        let wpi = Math.round(totalImp * 0.6);
 
-    // Display total
-    if (flexextImp !== 0 && rdudImp !== 0) {
-        document.getElementById(jointPrefix + '-total-imp').textContent = 
-            flexextImp + ' + ' + rdudImp + ' = ' + totalImp + ' UE = ' + wpi + ' WPI';
-    } else {
-        document.getElementById(jointPrefix + '-total-imp').textContent = 
-            totalImp + ' UE = ' + wpi + ' WPI';
+        // Display total
+        if (flexextImp !== 0 && rdudImp !== 0) {
+            document.getElementById(jointPrefix + '-total-imp').textContent = 
+                flexextImp + ' + ' + rdudImp + ' = ' + totalImp + ' UE = ' + wpi + ' WPI';
+        } else {
+            document.getElementById(jointPrefix + '-total-imp').textContent = 
+                totalImp + ' UE = ' + wpi + ' WPI';
+        }
     }
 }
 
-// Function to update shoulder rotation impairment
-function updateShoulderRotationImpairment() {
+// Function to update shoulder impairment
+function updateShoulderImpairment() {
+    // Call the existing function for flexion/extension and abduction/adduction
+    updateJointImpairment('shoulder', SHOULDERFlexionExtensionData, SHOULDERAbductionAdductionData);
+    
+    // Handle rotation impairment
     let intRotAngle = parseInt(document.getElementById('shoulder-introt-angle').value);
     let extRotAngle = parseInt(document.getElementById('shoulder-extrot-angle').value);
     let rotationAnkylosisAngle = parseInt(document.getElementById('shoulder-rotation-ankylosis-angle').value);
@@ -1264,20 +1270,20 @@ function updateShoulderRotationImpairment() {
 
     document.getElementById('shoulder-rotation-imp').textContent = rotationImp;
 
-    // Recalculate total shoulder impairment
+    // Calculate total shoulder impairment
     let flexextImp = parseInt(document.getElementById('shoulder-flexext-imp').textContent) || 0;
     let abdaddImp = parseInt(document.getElementById('shoulder-abdadd-imp').textContent) || 0;
     let totalImp = flexextImp + abdaddImp + rotationImp;
     let wpi = Math.round(totalImp * 0.6);
 
     // Display total
+    let totalText = '';
     if (flexextImp !== 0 && abdaddImp !== 0 && rotationImp !== 0) {
-        document.getElementById('shoulder-total-imp').textContent = 
-            flexextImp + ' + ' + abdaddImp + ' + ' + rotationImp + ' = ' + totalImp + ' UE = ' + wpi + ' WPI';
+        totalText = `${flexextImp} + ${abdaddImp} + ${rotationImp} = ${totalImp} UE = ${wpi} WPI`;
     } else {
-        document.getElementById('shoulder-total-imp').textContent = 
-            totalImp + ' UE = ' + wpi + ' WPI';
+        totalText = `${totalImp} UE = ${wpi} WPI`;
     }
+    document.getElementById('shoulder-total-imp').textContent = totalText;
 }
 
 // Event listeners for all input fields
@@ -1289,11 +1295,7 @@ inputFields.forEach(input => {
         } else if (input.id.startsWith('elbow')) {
             updateJointImpairment('elbow', ELBOWFlexionExtensionData, ELBOWPronationSupinationData);
         } else if (input.id.startsWith('shoulder')) {
-            if (input.id.includes('introt') || input.id.includes('extrot') || input.id.includes('rotation')) {
-                updateShoulderRotationImpairment();
-            } else {
-                updateJointImpairment('shoulder', SHOULDERFlexionExtensionData, SHOULDERAbductionAdductionData);
-            }
+            updateShoulderImpairment();
         }
     });
 });
